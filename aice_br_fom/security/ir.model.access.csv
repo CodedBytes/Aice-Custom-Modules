@@ -7,4 +7,6 @@ fom_order_resource_management,access.fom.resource,model_fom_resource,,1,1,1,1
 fom_order_storetype_management,access.fom.storetype,model_fom_storetype,,1,1,1,1
 fom_order_terminal_management,access.fom.terminal,model_fom_terminal,,1,1,1,1
 fom_order_takeback,access.fom.takeback,model_fom_takeback,,1,1,1,1
+fom_order_ordertype,access.fom.ordertype,model_fom_ordertype,,1,1,1,1
+fom_order_markettype,access.fom.markettype,model_fom_markettype,,1,1,1,1
 

@@ -20,7 +20,7 @@ class FomResourceType(models.Model):
         return res
 
     # Code Field
-    resource_type_name = fields.Char(string='Resorce Type Name', required=True)
+    resource_type_name = fields.Char(string='Resorce Type Name', required=True, translate=True)
 
     # Parent Category field
     resource_type_parent_category = fields.Many2one('fom.resourcetype', string="Parent Category", required=False)
@@ -75,7 +75,7 @@ class FomResource(models.Model):
     resource_type_id = fields.Many2one('fom.resourcetype', string="Resource Type", required=True)
 
     # Resource Name field
-    resource_name = fields.Char(string='Resource Name', required=True)
+    resource_name = fields.Char(string='Resource Name', required=True, translate=True)
 
     # Distribuitor list
     distributor_id = fields.Many2one('res.partner', string="Distributor", required=True)
@@ -120,7 +120,7 @@ class FomStoreType(models.Model):
         self.last_modified_date = fields.Datetime.now()
 
     # Name Field
-    store_type_name = fields.Char(string='Store Type Name', required=True)
+    store_type_name = fields.Char(string='Store Type Name', required=True, translate=True)
 
     # Parent Category field
     store_type_parent_category = fields.Many2one('fom.storetype', string="Parent Category", required=False)
@@ -134,7 +134,7 @@ class FomStoreType(models.Model):
     # Created time field
     created_time = fields.Datetime(string='Created Date', required=True, readonly=True, index=True, copy=False, default=fields.Datetime.now)
     last_modified_date = fields.Datetime(string='Modified Date', readonly=True)
-
+    
     # Parent Category Custom Name.
     def name_get(self):
         result = []
@@ -143,11 +143,117 @@ class FomStoreType(models.Model):
             result.append((rec.id, value))
         return result
 
+#Order Type Model
+class FomOrderType(models.Model):
+    _name='fom.ordertype'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
+    _description = "Order Type Interface"
+
+    # Name field
+    name = fields.Char(string='Order Type Code', required=True, copy=False, readonly=True, default=lambda self: _('New Order Type'))
+
+    # Generate unique identifier.
+    @api.model
+    def create(self, vals):
+        if not vals.get('name') or vals['name'] == _('New Order Type'):
+            sequence = self.env['ir.sequence'].next_by_code('fom.ordertype') or _('New Order Type')
+            vals['name'] = sequence
+        res = super(FomOrderType, self).create(vals)
+        if 'last_modified_date' not in vals:
+            res.update_last_modified_date()
+        return res
+
+    def write(self, vals):
+        res = super(FomOrderType, self).write(vals)
+        if 'last_modified_date' not in vals:
+            self.update_last_modified_date()
+        return res
+
+    def update_last_modified_date(self):
+        self.last_modified_date = fields.Datetime.now()
+
+    # Name Field
+    order_type_name = fields.Char(string='Order Type Name', required=True, translate=True)
+
+    # Parent Category field
+    order_type_parent_category = fields.Many2one('fom.ordertype', string="Parent Category", required=False)
+
+    # Status field
+    active = fields.Boolean(string='Active', default=True, tracking=True)
+
+    # Remark field
+    remark = fields.Text(string="Remark")
+
+    # Created time field
+    created_time = fields.Datetime(string='Created Date', required=True, readonly=True, index=True, copy=False, default=fields.Datetime.now)
+    last_modified_date = fields.Datetime(string='Modified Date', readonly=True)
+    
+    # Parent Category Custom Name.
+    def name_get(self):
+        result = []
+        for rec in self:
+            value = '[' + rec.name + '] ' + rec.order_type_name
+            result.append((rec.id, value))
+        return result
+
+# Store Type model
+class FomMarketType(models.Model):
+    _name='fom.markettype'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
+    _description = "Market Type Interface"
+
+    # Name field
+    name = fields.Char(string='Market Type Code', required=True, copy=False, readonly=True, default=lambda self: _('New Market Type'))
+
+    # Generate unique identifier.
+    @api.model
+    def create(self, vals):
+        if not vals.get('name') or vals['name'] == _('New Market Type'):
+            sequence = self.env['ir.sequence'].next_by_code('fom.markettype') or _('New Market Type')
+            vals['name'] = sequence
+        res = super(FomMarketType, self).create(vals)
+        if 'last_modified_date' not in vals:
+            res.update_last_modified_date()
+        return res
+
+    def write(self, vals):
+        res = super(FomMarketType, self).write(vals)
+        if 'last_modified_date' not in vals:
+            self.update_last_modified_date()
+        return res
+
+    def update_last_modified_date(self):
+        self.last_modified_date = fields.Datetime.now()
+
+    # Name Field
+    market_type_name = fields.Char(string='Market Type Name', required=True, translate=True)
+
+    # Parent Category field
+    market_type_parent_category = fields.Many2one('fom.markettype', string="Parent Category", required=False)
+
+    # Status field
+    active = fields.Boolean(string='Active', default=True, tracking=True)
+
+    # Remark field
+    remark = fields.Text(string="Remark")
+
+    # Created time field
+    created_time = fields.Datetime(string='Created Date', required=True, readonly=True, index=True, copy=False, default=fields.Datetime.now)
+    last_modified_date = fields.Datetime(string='Modified Date', readonly=True)
+    
+    # Parent Category Custom Name.
+    def name_get(self):
+        result = []
+        for rec in self:
+            value = '[' + rec.name + '] ' + rec.market_type_name
+            result.append((rec.id, value))
+        return result
+
 # Terminal Model
 class FomTerminalMgmt(models.Model):
     _name='fom.terminal'
     _inherit = ['mail.thread', 'mail.activity.mixin']
-    _description = "Resource Type Management Interface"
+    _description = "Terminal Management Interface"
 
     # Name field
     name = fields.Char(string='Register Code', required=True, copy=False, readonly=True, default=lambda self: _('New Terminal Information'))
@@ -173,7 +279,7 @@ class FomTerminalMgmt(models.Model):
         self.last_modified_date = fields.Datetime.now()
 
     # Store name
-    store_name = fields.Char(string='Store Name', required=True)
+    store_name = fields.Char(string='Store Name', required=True, translate=True)
 
     # Distribuitor
     distributor = fields.Many2one('res.partner', string='Distributor', required=True)
@@ -256,7 +362,7 @@ class FomTakeBack(models.Model):
 
 
     # Takeback name
-    takeback_name = fields.Char(string='Takeback Name', required=True)
+    takeback_name = fields.Char(string='Takeback Name', required=True, translate=True)
 
     # Takeback reason
     takeback_reason = fields.Text(string='Takeback Description', tracking=True)
@@ -267,3 +373,5 @@ class FomTakeBack(models.Model):
     # Created time field
     created_time = fields.Datetime(string='Created Date', required=True, readonly=True, index=True, copy=False, default=fields.Datetime.now)
     last_modified_date = fields.Datetime(string='Modified Date', readonly=True)
+
+

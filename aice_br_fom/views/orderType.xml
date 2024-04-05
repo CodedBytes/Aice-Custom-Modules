@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+        <!-- Search View -->
+        <record id="view_fom_res_type_search" model="ir.ui.view">
+            <field name="name">fom.ordertype.search</field>
+            <field name="model">fom.ordertype</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="order_type_name"/>
+                    <field name="order_type_parent_category"/>
+                    <field name="created_time"/>
+                    <field name="remark"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Parent Categories" name="order_type" context="{'group_by': 'order_type_parent_category'}"/>
+                    </group>
+                    <group expand="0" string="Filters">
+                        <filter string="Active" name="active" domain="[('active', '=', True)]"/>
+                        <filter string="Inactive" name="inactive" domain="[('active', '=', False)]"/>
+                    </group>
+                    <searchpanel>
+                        <field name="order_type_parent_category" string="Categories" enable_counters="1" icon="fa fa-clipboard" />
+                    </searchpanel>
+                </search>
+            </field>
+        </record>
+
+        <record id="view_fom_res_type_tree" model="ir.ui.view">
+                <field name="name">fom.ordertype.tree</field>
+                <field name="model">fom.ordertype</field>
+                <field name="arch" type="xml">
+                    <tree multi_edit="1">
+                        <field name="name"/>
+                        <field name="order_type_name"/>
+                        <field name="order_type_parent_category"/>
+                        <field name="created_time"/>
+                        <field name="active"/>
+                        <field name="remark"/>
+                    </tree>
+                </field>
+        </record>
+
+         <record id="view_fom_res_type_form" model="ir.ui.view">
+        <field name="name">fom.ordertype.form</field>
+        <field name="model">fom.ordertype</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" string="Code" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="order_type_name" widget="translate" />
+                            <field name="order_type_parent_category" />
+                        </group>
+                        <group>
+                            <field name="remark" />
+                            <field name="active" invisible="1"/>
+                            <field name="created_time"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+        </record>
+
+</odoo>

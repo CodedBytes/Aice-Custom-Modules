@@ -47,7 +47,7 @@
                     </div>
                     <group>
                         <group>
-                            <field name="takeback_name" />
+                            <field name="takeback_name" widget="translate" />
                             <field name="created_time" />
                         </group>
                         <group>

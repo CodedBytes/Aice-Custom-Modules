@@ -59,7 +59,7 @@
                             <field name="created_time"/>
                         </group>
                         <group>
-                            <field name="resource_name" />
+                            <field name="resource_name" widget="translate" />
                             <field name="active" invisible="1"/>
                             <field name="remark"/>
                             <field name="last_modified_date"/>

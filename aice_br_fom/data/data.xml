@@ -1,100 +1,178 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data noupdate="1">
+    <data >
 
-         <!-- Sequences for fom.order -->
+        <!-- Sequences for fom.order -->
         <record id="seq_fom_order" model="ir.sequence">
             <field name="name">Fom Order Sequence</field>
             <field name="code">fom.order</field>
             <field name="prefix">FOM</field>
             <field name="padding">5</field>
-            <field name="company_id" eval="False"/>
+            <field name="company_id" eval="False"/> <!-- Set to False to make it global -->
+
         </record>
 
 
     </data>
 
-    <data noupdate="1">
+    <data>
 
-         <!-- Sequences for fom.product -->
+        <!-- Sequences for fom.product -->
         <record id="seq_fom_product" model="ir.sequence">
             <field name="name">Fom Product Sequence</field>
             <field name="code">fom.products</field>
             <field name="prefix">FRZ</field>
             <field name="padding">5</field>
-            <field name="company_id" eval="False"/>
+            <field name="company_id" eval="False"/> <!-- Set to False to make it global -->
+
         </record>
 
 
     </data>
 
-    <data noupdate="1">
+    <data>
 
-         <!-- Sequences for fom.resourcetype -->
+        <!-- Sequences for fom.resourcetype -->
         <record id="seq_fom_resource" model="ir.sequence">
             <field name="name">Fom Resource Sequence</field>
             <field name="code">fom.resourcetype</field>
             <field name="prefix">RT</field>
             <field name="padding">5</field>
-            <field name="company_id" eval="False"/>
+            <field name="company_id" eval="False"/> <!-- Set to False to make it global -->
+
         </record>
 
 
     </data>
 
-    <data noupdate="1">
+    <data>
 
-         <!-- Sequences for fom.resource -->
+        <!-- Sequences for fom.resource -->
         <record id="seq_fom_resource_Info" model="ir.sequence">
             <field name="name">Fom Resource Info Sequence</field>
             <field name="code">fom.resource</field>
             <field name="prefix">RI</field>
             <field name="padding">5</field>
-            <field name="company_id" eval="False"/>
+            <field name="company_id" eval="False"/> <!-- Set to False to make it global -->
+
         </record>
 
 
     </data>
 
-    <data noupdate="1">
+    <data>
 
-         <!-- Sequences for fom.resource -->
+        <!-- Sequences for fom.resource -->
         <record id="seq_fom_store_type_Info" model="ir.sequence">
             <field name="name">Fom Store Type Sequence</field>
             <field name="code">fom.storetype</field>
             <field name="prefix">ST</field>
             <field name="padding">5</field>
-            <field name="company_id" eval="False"/>
+            <field name="company_id" eval="False"/> <!-- Set to False to make it global -->
+
         </record>
 
 
     </data>
+    <data>
 
-    <data noupdate="1">
+        <!-- Sequences for fom.ordertype -->
+        <record id="seq_fom_ordertype" model="ir.sequence">
+            <field name="name">Fom Order Type Sequence</field>
+            <field name="code">fom.ordertype</field>
+            <field name="prefix">OT</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/> <!-- Set to False to make it global -->
 
-         <!-- Sequences for fom.terminal -->
+        </record>
+
+
+    </data>
+    <data>
+
+        <!-- Sequences for fom.qtytype -->
+        <record id="seq_fom_qtytype" model="ir.sequence">
+            <field name="name">Fom Quantity Type Sequence</field>
+            <field name="code">fom.qtytype</field>
+            <field name="prefix">QT</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/> <!-- Set to False to make it global -->
+        </record>
+    </data>
+    
+
+
+    <data>
+
+        <!-- Sequences for fom.terminal -->
         <record id="seq_fom_terminal_Info" model="ir.sequence">
             <field name="name">Fom Terminal Sequence</field>
             <field name="code">fom.terminal</field>
             <field name="prefix">TI</field>
             <field name="padding">5</field>
-            <field name="company_id" eval="False"/>
+            <field name="company_id" eval="False"/> <!-- Set to False to make it global -->
+
         </record>
 
 
     </data>
 
-    <data noupdate="1">
+    <data>
 
-         <!-- Sequences for fom.terminal -->
+        <!-- Sequences for fom.terminal -->
         <record id="seq_fom_takeback_Info" model="ir.sequence">
             <field name="name">Fom takeback Sequence</field>
             <field name="code">fom.takeback</field>
             <field name="prefix">TB</field>
             <field name="padding">5</field>
-            <field name="company_id" eval="False"/>
+            <field name="company_id" eval="False"/> <!-- Set to False to make it global -->
+
         </record>
 
 
     </data>
+
+    <data>
+
+        <!-- Sequences for fom.salesdepartment -->
+        <record id="seq_fom_takeback_Info" model="ir.sequence">
+            <field name="name">Fom Sales Department Sequence</field>
+            <field name="code">fom.salesdepartment</field>
+            <field name="prefix">SD</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/> <!-- Set to False to make it global -->
+
+        </record>
+
+
+    </data>
+    <data>
+
+        <!-- Sequences for fom.salesdepartment -->
+        <record id="seq_fom_aicearea_Info" model="ir.sequence">
+            <field name="name">Fom Aice Area Sequence</field>
+            <field name="code">fom.aicearea</field>
+            <field name="prefix">MT</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/> <!-- Set to False to make it global -->
+
+        </record>
+
+
+    </data>
+    <data>
+
+        <!-- Sequences for fom.salesdepartment -->
+        <record id="seq_fom_markettype_Info" model="ir.sequence">
+            <field name="name">Fom Market Type Sequence</field>
+            <field name="code">fom.markettype</field>
+            <field name="prefix">AA</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/> <!-- Set to False to make it global -->
+
+        </record>
+
+
+    </data>
+    
 </odoo>

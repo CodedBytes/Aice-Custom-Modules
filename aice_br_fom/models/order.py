@@ -60,14 +60,12 @@ class FomOrder(models.Model):
         res = super(FomOrder, self).create(vals)
         return res
     
-    # For canceling any invoice made from the order [UNUSED]
-    invoice_ids = fields.Many2many("account.move", string='Invoices', readonly=True, copy=False, search="_search_invoice_ids")
-
     # Going to the next item in the sequence
     def jump_state(self):
         self.state = 'sent'
 
-    # ------------ Cancel button
+    # ------------ Cancel button start
+    invoice_ids = fields.Many2many("account.move", string='Invoices', readonly=True, copy=False, search="_search_invoice_ids")
     def CancelState(self):
         cancel_warning = self._show_cancel_wizard()
         if cancel_warning:
@@ -100,22 +98,14 @@ class FomOrder(models.Model):
     # Name of the operation.
     name = fields.Char(string='Order ID', required=True, copy=False, readonly=True, default=lambda self: _('New Order'))
 
-    # Order Type selector
-    ordertype = fields.Selection([
-        ('cg', '采购'),
-        ('fk', 'FK'),
-        ('other', 'Other'),
-    ], string = 'Order Type',required=True, default='cg', tracking=True) 
+    # Order Types
+    ordertype = fields.Many2one('fom.ordertype',string="Order Type", required=True, tracking=True)
     
-    # Gets the actual datte time from the server.
+    # Gets the actual date time from the server.
     dateorder = fields.Datetime(string='Order Date', required=True, readonly=True, index=True, copy=False, default=fields.Datetime.now)
 
-    # Maket type selector
-    markettype = fields.Selection([
-        ('gt', 'GT'),
-        ('mt', 'MT'),
-        ('other', 'Other'),
-    ], string="Market Type", required=True, default='gt', tracking=True)
+    # Maket types
+    markettype = fields.Many2one('fom.markettype',string="Market Type", required=True, tracking=True)
 
     # Gets the costumer array from db res.partner
     customer_id = fields.Many2one(
@@ -144,8 +134,7 @@ class FomOrder(models.Model):
     company_id = fields.Many2one('res.company', string='Company', required=True, default=lambda self: self.env.company, tracking=True)
 
     # Currency id
-    currency_id = fields.Many2one('res.currency', 'Currency', required=True,
-        default=lambda self: self.env.company.currency_id.id)
+    currency_id = fields.Many2one('res.currency', 'Currency', required=True, default=lambda self: self.env.company.currency_id.id)
 
     # Archive / Unarchive
     active = fields.Boolean(string='Active', default=True, tracking=True)
@@ -220,13 +209,13 @@ class FomOrderLine(models.Model):
     product_uom_qty = fields.Float(string='Quantity', digits='Product Unit of Measure', required=True, default=1.0, tracking=True)
     price_unit = fields.Float('Unit Price', required=True, digits='Product Price', default=0.0, tracking=True)
     order_id = fields.Many2one('fom.order', string='Order Reference', required=True, ondelete='cascade', index=True, copy=False)
-    subtotal = fields.Float(string='Subtotal', compute='_compute_subtotal', store = True, tracking=True)
+    subtotal = fields.Float(string='Subtotal', compute='_compute_subtotal', store = True)
     tax_id = fields.Many2one('account.tax', string='Tax', tracking=True)
-    tax = fields.Float(string='Tax', compute='_compute_tax', store=True, tracking=True)
+    tax = fields.Float(string='Tax', compute='_compute_tax', store=True)
     
     # Currency id
     currency_id = fields.Many2one('res.currency', 'Currency', required=True, default=lambda self: self.env.company.currency_id.id)
-    company_id = fields.Many2one('res.company', string='Company', required=True, default=lambda self: self.env.company, tracking=True)
+    company_id = fields.Many2one('res.company', string='Company', required=True, default=lambda self: self.env.company)
 
     # Calculating the total
     @api.depends('tax_id', 'subtotal')
@@ -239,31 +228,21 @@ class FomOrderLine(models.Model):
     def _compute_subtotal(self):
         for line in self:
             line.subtotal =  line.product_uom_qty * line.price_unit 
-
-    # Writing tracking on change
-    def write(self, vals):
-        track_self = super().write(vals)
-        if vals:
-            for line in self:
-                changes = []
-                for field, value in vals.items():
-                    if field in line._fields:
-                        if field == 'product_id':
-                            product_name = self.env['product.product'].browse(value).name
-                            changes.append(f'{field}: {product_name}')
-                        else:
-                            changes.append(f'{field}: {value}')
-                if changes:
-                    line._track_changes(changes)
-        return track_self
-
-    # Custom tracking 
-    def _track_changes(self, changes):
-        for record in self:
-            if record.order_id:
-                record.order_id.message_post(body=f'{record._description}: {", ".join(changes)}')
         
     # Automatically getting field information o tree from
     @api.onchange('product_id')
     def set_code(self):
         self.price_unit = self.product_id.lst_price
+
+    # Custom message
+    def write(self, vals):
+        super().write(vals)
+        if set(vals) & set(self._get_tracked_fields()):
+            self._track_changes(self.order_id)
+
+    def _track_changes(self, field_to_track):
+        if self.message_ids:
+            message_id = field_to_track.message_post(body=f'<strong>{ self._description }:</strong> { self.display_name }').id
+            trackings = self.env['mail.tracking.value'].sudo().search([('mail_message_id', '=', self.message_ids[0].id)])
+            for tracking in trackings:
+                tracking.copy({'mail_message_id': message_id})

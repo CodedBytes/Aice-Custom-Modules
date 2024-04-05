@@ -54,7 +54,7 @@
                     </div>
                     <group>
                         <group>
-                            <field name="resource_type_name" />
+                            <field name="resource_type_name" widget="translate" />
                             <field name="resource_type_parent_category" />
                         </group>
                         <group>
