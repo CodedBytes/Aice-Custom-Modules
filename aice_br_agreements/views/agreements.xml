@@ -31,11 +31,13 @@
                 <field name="model">a_agreement.list</field>
                 <field name="arch" type="xml">
                     <tree multi_edit="1">
+                        <header>
+                            <button name="request_auth_return_user_and_done_agreements" string="Atualizar Contratos" type="object" class="oe_highlight"/>
+                        </header>
                         <field name="name" />
                         <field name="user_id" widget="many2one_avatar_user" optional="show" />
                         <field name="doc_name" />
                         <field name="doc_reference" />
-                        <field name="customer_id" />
                         <field name="date_creation"/>
                         <field name="note" />
                     </tree>
@@ -53,7 +55,6 @@
                         <field name="user_id" />
                         <field name="doc_name" />
                         <field name="doc_reference" />
-                        <field name="customer_id" />
                         <field name="date_creation"/>
                         <field name="note" />
                         <!--<field name="name"/>
@@ -78,7 +79,7 @@
             <form>
                 <header>
                     <button name="toSent" string="Approve Document" id="toSent" type="object" class="btn-primary" states="draft" />
-                    <button name="download_pdf" string="Download" id="download_pdf" type="object" class="btn-primary" states="sent" />
+                    <button name="download_pdf" string="Download Document" id="download_pdf" type="object" class="btn-primary" states="sent" />
                     <button name="toDraft" string="Back To Draft" id="toDraft" type="object" states="cancel,sent" />
                     <field name="state" widget="statusbar" statusbar_visible="draft,sent" readonly="1" />
                 </header>
@@ -92,10 +93,9 @@
                         <group>
                             <field name="doc_name" />
                             <field name="doc_reference" />
-                            <field name="pdf_file" states="draft"/>
+                            <field name="pdf_file" invisible="0" />
                         </group>
                         <group>
-                            <field name="customer_id" />
                             <field name="user_id" />
                             <field name="date_creation" />
                             <field name="note" />
